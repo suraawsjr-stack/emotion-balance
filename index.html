@@ -478,7 +478,7 @@ body[data-team] .panel .big:not(.danger):not(.warn) {
     </div>
   </div>
 
-  <div id="rotate-hint"><p>اميلي الآيباد للوضع الأفقي 🌙</p><p>أدخلي الآيباد في الوضع الأفقي</p></div>
+  <div id="rotate-hint"><p>تعمل اللعبة في الوضع الأفقي.</p></div>
 </div>
 
 <script>
@@ -963,7 +963,7 @@ window.EB = window.EB || {};
     lesson: 'أساليب التوافق النفسي — الصحة النفسية — الصف الثاني عشر',
     handoffGood: 'أحسنتِ! المهمة مكتملة.',
     handoffPartial: 'انتهى الوقت — تم حفظ تقدمك.',
-    handoffPad: 'سلّمي الآيباد إلى اللاعبة التالية.',
+    handoffPad: 'حان دور اللاعبة التالية.',
     startNext: 'ابدئي المهمة التالية',
     startRace: 'ابدئي سباق الفريق',
     calmRestored: 'CALM RESTORED',
@@ -1250,17 +1250,18 @@ window.EB = window.EB || {};
     function eye(x) {
       const E = svg('g', {}, headInner);
       E.setAttribute('transform', `translate(${x},-32)`);
+      const visibleEye = svg('g', {}, E);
       /* إطار علوي + رموش */
-      svg('path', { d: 'M-10,-4 q10,-11 20,-1', stroke: LINE, 'stroke-width': 3.2, fill: 'none', 'stroke-linecap': 'round' }, E);
-      svg('path', { d: 'M9,-7 l5,-4 M11,-2 l6,-2', stroke: LINE, 'stroke-width': 2.2, 'stroke-linecap': 'round' }, E);
-      svg('ellipse', { cx: 0, cy: 0, rx: 9, ry: 10.5, fill: '#fffdfa' }, E);
-      const iris = svg('g', { class: 'iris' }, E);
+      svg('path', { d: 'M-10,-4 q10,-11 20,-1', stroke: LINE, 'stroke-width': 3.2, fill: 'none', 'stroke-linecap': 'round' }, visibleEye);
+      svg('path', { d: 'M9,-7 l5,-4 M11,-2 l6,-2', stroke: LINE, 'stroke-width': 2.2, 'stroke-linecap': 'round' }, visibleEye);
+      svg('ellipse', { cx: 0, cy: 0, rx: 9, ry: 10.5, fill: '#fffdfa' }, visibleEye);
+      const iris = svg('g', { class: 'iris' }, visibleEye);
       svg('ellipse', { cx: 0, cy: 1, rx: 6.4, ry: 7.6, fill: rg(x < 0 ? 'eyeL' : 'eyeR', lite(pal.eye || '#5a3a28', .35), shade(pal.eye || '#5a3a28', .3)) }, iris);
       svg('ellipse', { cx: 0, cy: 2.4, rx: 3.1, ry: 3.9, fill: '#2b1a12' }, iris);
       svg('circle', { cx: -2.4, cy: -2.6, r: 2.5, fill: '#fff', opacity: .95 }, iris);
       svg('circle', { cx: 2.2, cy: 3.6, r: 1.3, fill: '#fff', opacity: .7 }, iris);
-      const lid = svg('path', { d: 'M-9.5,-2 a9.5,10.5 0 0 0 19,0 z', fill: pal._skin, 'data-r': 'skin' }, E);
-      return { group: E, lid, iris };
+      const lid = path('M-9,0 Q0,4 9,0', { fill: 'none', stroke: LINE, 'stroke-width': 2.4, 'stroke-linecap': 'round', opacity: 0 }, E);
+      return { visibleEye, lid };
     }
     const eyeL = eye(-14.5), eyeR = eye(14.5);
     for (const side of [-1, 1]) {
@@ -1356,10 +1357,11 @@ window.EB = window.EB || {};
       if (tailG) tailG.setAttribute('transform', `translate(34,-68) rotate(${r2(-hairLag * 1.6)})`);
       skirt.setAttribute('transform', `rotate(${r2(clothLag * .5)})`);
 
-      const open = clamp(st.eyes * (1 - blink), 0.04, 1);
+      const open = clamp(st.eyes * (1 - blink), 0, 1);
       [eyeL, eyeR].forEach(e => {
-        e.lid.setAttribute('transform', `translate(0,${r2(-11 + open * 13)}) scale(1,${r2(Math.max(.2, 1.06 - open))})`);
-        e.iris.setAttribute('transform', `translate(0,${r2((1 - open) * 4)})`);
+        e.visibleEye.setAttribute('transform', `scale(1,${r2(open)})`);
+        e.visibleEye.setAttribute('opacity', open > .06 ? 1 : 0);
+        e.lid.setAttribute('opacity', open <= .06 ? 1 : 0);
       });
       mouth.setAttribute('d', MOUTHS[st.mouth] || MOUTHS.neutral);
       mouth.setAttribute('fill', (st.mouth === 'open' || st.mouth === 'yawn' || st.mouth === 'oh') ? '#9c4351' : 'none');
@@ -1380,10 +1382,12 @@ window.EB = window.EB || {};
     function startIdle() {
       frame = onFrame(function (d, now) {
         blinkT += d * 1000;
-        if (blink < 1 && blinkT > nextBlink) blink = Math.min(1, blink + d * 9);
-        else if (blink > 0 && blinkT > nextBlink) {
-          blink = Math.max(0, blink - d * 9);
-          if (blink === 0) nextBlink = blinkT + 1500 + Math.random() * 3400;
+        const sinceBlink = blinkT - nextBlink;
+        if (sinceBlink >= 180) {
+          blink = 0;
+          nextBlink = blinkT + 1500 + Math.random() * 3400;
+        } else if (sinceBlink >= 0) {
+          blink = Math.min(1, sinceBlink / 70, (180 - sinceBlink) / 90);
         }
         const t = (now - t0) / 1000;
         if (st.breathe <= .001) {
@@ -2667,12 +2671,12 @@ window.EB = window.EB || {};
       h('div', { class: 'progress-dots' }, D.LEVELS.map((l, i) =>
         h('span', { class: 'dot' + (i < li ? ' done' : i === li ? ' now' : '') }))),
       h('p', { class: 'sub', text: lvl.hint }),
-      h('p', { class: 'sub', text: 'المؤقت يعمل أثناء تسليم الآيباد — جهّزي جهازك وابدئي بسرعة.' }),
+      h('p', { class: 'sub', text: 'المؤقت يستمر بين الأدوار. ابدئي حين تكونين جاهزة.' }),
       h('div', { class: 'row' }, [start])
     ]);
   }
 
-  /* ---------- شاشة تسليم الآيباد ---------- */
+  /* ---------- شاشة انتقال الدور ---------- */
   function handoff(res) {
     const li = EB.state.levelIndex, last = li >= D.LEVELS.length - 1;
     const btn = h('button', { class: 'btn huge primary glow', text: last ? 'إنهاء سباق الفريق' : T.startNext });
@@ -3814,7 +3818,7 @@ window.EB = window.EB || {};
 </script>
 <script>
 /* ============ التحدي 4 — HEALTHY CATCH: التقاط الطعام لتكوين طبق متوازن ============
-   الفكرة كما هي: طعام يتساقط وصحن تتحكمين به يمينًا ويسارًا على الآيباد.
+   الفكرة كما هي: طعام يتساقط وصحن تتحكمين به يمينًا ويسارًا أثناء اللعب.
    التطوير هنا بصري فقط (رسمات الأطعمة، حركة السقوط، تفاعلات البطلة والصحن).
    لا ربط أبدًا بين الأطعمة والوزن أو شكل الجسم. */
 (function (EB) {
