@@ -418,6 +418,20 @@ body[data-team] .panel .big:not(.danger):not(.warn) {
   text-shadow: none;
 }
 
+.scoreboard { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.card > *, .team-card, .lvllist li > * { min-width: 0; max-width: 100%; }
+.card, .team-card { overflow-wrap: anywhere; }
+.lvllist li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  text-align: start;
+}
+.lvllist li > :last-child { text-align: end; }
+@media (max-width: 600px) {
+  .scoreboard { grid-template-columns: minmax(0, 1fr); }
+}
+
 </style>
 </head>
 <body>
@@ -2346,17 +2360,11 @@ window.EB = window.EB || {};
       svg('circle', { cx: 802, cy: 541, r: 31, fill: 'var(--room-mid)', stroke: 'var(--accent-deep)', 'stroke-width': 3 }, top);
       svg('rect', { x: 790, y: 528, width: 22, height: 27, rx: 3, fill: 'var(--accent-deep)', transform: 'rotate(-17,801,542)' }, top);
       /* رف صغير ووسائد في ركن الغرفة */
-      svg('rect', { x: 62, y: 81, width: 180, height: 76, rx: 14, fill: 'var(--room-mid)', stroke: 'var(--accent-deep)', 'stroke-width': 3 }, top);
+      svg('rect', { x: 62, y: 37, width: 180, height: 76, rx: 14, fill: 'var(--room-mid)', stroke: 'var(--accent-deep)', 'stroke-width': 3 }, top);
       for (let i = 0; i < 7; i++) {
-        svg('rect', { x: 77 + i * 21, y: 96 + (i % 2) * 7, width: 13, height: 42 - (i % 2) * 7, rx: 3, fill: i % 2 ? 'var(--room-deep)' : 'var(--room-wall)' }, top);
+        svg('rect', { x: 77 + i * 21, y: 52 + (i % 2) * 7, width: 13, height: 42 - (i % 2) * 7, rx: 3, fill: i % 2 ? 'var(--room-deep)' : 'var(--room-wall)' }, top);
       }
-      /* فانوس سقف ورقي */
-      const ceil = svg('g', { transform: 'translate(512,366)' }, top);
-      svg('circle', { cx: 0, cy: 0, r: 34, fill: C.glass, opacity: .55 }, ceil);
-      svg('circle', { cx: 0, cy: 0, r: 20, fill: C.glass, stroke: '#e0c48f', 'stroke-width': 3 }, ceil);
-      svg('path', { d: 'M-18,0 q18,10 36,0 M-18,0 q18,-10 36,0', stroke: '#e0c48f', 'stroke-width': 2, fill: 'none', opacity: .8 }, ceil);
-      daisy(ceil, 0, 0, 7);
-      R.topCeil = ceil;
+      top.appendChild(T.cat);
     })();
 
     /* هندسة مناطق اللمس في المنظور العلوي (تُستخدم في تحدي غرفة الهدوء) */
@@ -2367,7 +2375,7 @@ window.EB = window.EB || {};
       door: { cx: 118, cy: 300, x: 44, y: 212, w: 168, h: 178 },
       bed: { x: 692, y: 74, w: 288, h: 190 },
       rug: { cx: 512, cy: 366, rx: 218, ry: 146 },
-      catLane: { x0: 330, x1: 880, y0: 200, y1: 556 },
+      catLane: { x0: 370, x1: 770, y0: 295, y1: 455 },
       girl: { x: 660, y: 430 }
     };
 
@@ -3248,7 +3256,7 @@ window.EB = window.EB || {};
         ring: mkRing(PZ), hit: mkHit(PZ, 'phone'),
         label: null,
         begin() {
-          this.noisy = true; this.next = 0;
+          this.noisy = true; this.next = 200 + Math.random() * 850;
           this.ring.setAttribute('opacity', .9);
           if (this.label) { this.label.remove(); this.label = null; }
         },
@@ -3278,7 +3286,7 @@ window.EB = window.EB || {};
         flash: svg('ellipse', { cx: WZ.cx, cy: WZ.cy + 30, rx: 210, ry: 120, fill: '#fff8e8', opacity: 0, 'pointer-events': 'none', filter: 'url(#fSoft)' }, g),
         label: null,
         begin() {
-          this.noisy = true; this.next = 2200;
+          this.noisy = true; this.next = 400 + Math.random() * 1300;
           T.windowBand.setAttribute('fill', 'url(#gStorm)');
           T.shutterL.setAttribute('width', 44);
           T.shutterR.setAttribute('x', 608);
@@ -3319,7 +3327,7 @@ window.EB = window.EB || {};
         ring: mkRing(DZ), hit: mkHit(DZ, 'kid'),
         label: null,
         begin() {
-          this.noisy = true; this.t = 0; this.next = 600;
+          this.noisy = true; this.t = Math.random(); this.next = 250 + Math.random() * 950;
           T.kid.setAttribute('opacity', 1);
           this.ring.setAttribute('opacity', .9);
           if (this.label) { this.label.remove(); this.label = null; }
@@ -3358,11 +3366,11 @@ window.EB = window.EB || {};
         begin() {
           this.noisy = true; this.k = 0;
           this.hit.setAttribute('pointer-events', 'all');
-          const lane = geo.catLane, r = U.rng(2411 + S.round * 97);
+          const lane = geo.catLane, r = Math.random;
           this.path = [];
           for (let i = 0; i < 22; i++) {
             let x = lane.x0 + r() * (lane.x1 - lane.x0), y = lane.y0 + r() * (lane.y1 - lane.y0);
-            if (catFrom === 'right') x = (lane.x0 + lane.x1) - x;      // نفس المسار معكوسًا — صعوبة متساوية
+            if (catFrom === 'right') x = (lane.x0 + lane.x1) - x;      // اتجاه الانطلاق بحسب الفريق
             this.path.push({ x, y });
           }
           this.x = this.path[0].x; this.y = this.path[0].y;
@@ -3444,7 +3452,7 @@ window.EB = window.EB || {};
         if (ORDER.every(k => !MAP[k].noisy)) {
           if (wave === 2) endRound(true);
           else {
-            nextWaveAt = S.roundMs + waveDelay[S.round];
+            nextWaveAt = S.roundMs + waveDelay[S.round] * (.75 + Math.random() * .5);
             headTxt.textContent = 'استعدّي — الموجة الثانية';
           }
         }
@@ -4368,13 +4376,13 @@ window.EB = window.EB || {};
         svg('rect', { x: 26, y: y, width: 250, height: 90, rx: 20, fill: 'rgba(255,255,255,.93)', stroke: '#c3b4d4', 'stroke-width': 3 }, box);
         const bar = svg('rect', { x: 26, y: y, width: 10, height: 90, rx: 5, fill: t.color }, box);
         svg('text', { x: 62, y: y + 44, 'font-size': 30, text: t.emoji }, box);
-        const nm = svg('text', { x: 102, y: y + 40, 'font-size': 18, 'font-weight': 800, fill: '#5a4034', text: t.ar }, box);
-        const tm = svg('text', { x: 102, y: y + 68, 'text-anchor': 'start', 'font-size': 15, 'font-weight': 800, fill: '#8a7365', text: 'غير محددة' }, box);
+        const nm = svg('text', { x: 230, y: y + 40, direction: 'rtl', 'text-anchor': 'start', 'font-size': 17, 'font-weight': 800, fill: '#5a4034', text: t.ar }, box);
+        const tm = svg('text', { x: 230, y: y + 68, direction: 'rtl', 'text-anchor': 'start', 'font-size': 15, 'font-weight': 800, fill: '#8a7365', text: 'غير محددة' }, box);
         const chk = svg('text', { x: 254, y: y + 40, 'text-anchor': 'middle', 'font-size': 22, 'font-weight': 900, fill: '#4f6f3f', text: '', opacity: 0 }, box);
         U.tap(box, () => select(t.id));
         chips[t.id] = { box, tm, chk, bar, t };
       });
-      const legend = svg('text', { x: 151, y: 528, 'text-anchor': 'middle', 'font-size': 15, 'font-weight': 800, fill: '#8a7365', text: 'اختاري مهمة، ثم حدّدي بدايتها ونهايتها على القرص' }, g);
+      const legend = svg('text', { x: 151, y: 528, 'text-anchor': 'middle', 'font-size': 15, 'font-weight': 800, fill: '#8a7365', text: 'حدّدي بداية المهمة ونهايتها' }, g);
 
       /* ---------- طباعة الفترات ---------- */
       function redraw() {
@@ -4592,9 +4600,9 @@ window.EB = window.EB || {};
           const col = r.frac >= .85 ? '#4f6f3f' : r.frac >= .45 ? '#d99a3c' : '#c25c54';
           svg('circle', { cx: X + 34, cy: y - 6, r: 14, fill: col, opacity: .18 }, card);
           svg('text', { x: X + 34, y: y, 'text-anchor': 'middle', 'font-size': 20, 'font-weight': 900, fill: col, text: mark }, card);
-          svg('text', { x: X + 58, y: y, 'font-size': 16, 'font-weight': 800, fill: '#5a4034', text: r.ar }, card);
-          svg('text', { x: X + 58, y: y + 17, 'font-size': 13, 'font-weight': 700, fill: '#8a7365', text: r.detail }, card);
-          svg('text', { x: X + W - 26, y: y + 4, 'text-anchor': 'end', 'font-size': 16, 'font-weight': 900, fill: col, text: `${r.earned}/${r.w}` }, card);
+          svg('text', { x: X + W - 106, y: y, direction: 'rtl', 'text-anchor': 'start', 'font-size': 16, 'font-weight': 800, fill: '#5a4034', text: r.ar }, card);
+          svg('text', { x: X + W - 106, y: y + 17, direction: 'rtl', 'text-anchor': 'start', 'font-size': 13, 'font-weight': 700, fill: '#8a7365', text: r.detail }, card);
+          svg('text', { x: X + W - 26, y: y + 4, direction: 'ltr', 'text-anchor': 'end', 'font-size': 16, 'font-weight': 900, fill: col, text: `${r.earned}/${r.w}` }, card);
         });
         tween({
           from: 0, to: 1, dur: 900, ease: Ease.out,
