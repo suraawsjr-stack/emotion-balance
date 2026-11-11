@@ -401,6 +401,23 @@ body[data-team] .panel .big:not(.danger):not(.warn) {
   color: var(--accent-deep);
 }
 
+.btn.breath-button[data-breath-state="active"] {
+  background: #087751;
+  color: #fff;
+  text-shadow: none;
+  box-shadow: 0 0 0 3px #aef1d0, 0 6px 16px #173e3170;
+}
+.btn.breath-button[data-breath-state="idle"] {
+  background: #dce2eb;
+  color: #394354;
+  text-shadow: none;
+}
+.btn.breath-button[data-breath-state="hold"] {
+  background: #f6bf48;
+  color: #3c2500;
+  text-shadow: none;
+}
+
 </style>
 </head>
 <body>
@@ -2893,18 +2910,17 @@ window.EB = window.EB || {};
         svg('stop', { offset: '100%', 'stop-color': '#ffe7b8', 'stop-opacity': '.92' }, lg3);
       }
 
-      const bIn = ctx.ui.addBtn('شهيق ⬆', 'big primary', () => press('in'), '↑');
-      const bOut = ctx.ui.addBtn('زفير ⬇', 'big violet', () => press('out'), '↓');
+      const bIn = ctx.ui.addBtn('شهيق ⬆', 'big breath-button', () => press('in'), '↑');
+      const bOut = ctx.ui.addBtn('زفير ⬇', 'big breath-button', () => press('out'), '↓');
       EB.keys.set({
         ArrowUp: () => press('in'), KeyW: () => press('in'), KeyA: () => press('in'),
         ArrowDown: () => press('out'), KeyS: () => press('out'), KeyD: () => press('out')
       }, '↑ شهيق · ↓ زفير — اضغطي عند منتصف المنطقة البيضاء');
-      function markActive(kind) {
-        ['in', 'out'].forEach(k => {
-          const on = k === kind, b = k === 'in' ? bIn : bOut;
-          b.classList.toggle('glow', on);
-          b.classList.toggle('off', kind != null && !on);
-        });
+      function markActive(kind, ready = false) {
+        for (const [key, button] of [['in', bIn], ['out', bOut]]) {
+          button.dataset.breathState = kind === 'hold' ? 'hold' : key === kind ? 'active' : 'idle';
+          button.classList.toggle('glow', ready && key === kind);
+        }
       }
 
       const S = {
@@ -2969,7 +2985,7 @@ window.EB = window.EB || {};
       }
       function cue(kind) {
         startTravel();
-        markActive(kind);
+        markActive(kind, true);
         setPhase(kind === 'in' ? 'استعداد — شهيق' : 'استعداد — زفير');
         gradeTxt.textContent = kind === 'in' ? 'INHALE' : 'EXHALE';
         gradeTxt.setAttribute('fill', '#ffd38d');
@@ -3012,7 +3028,7 @@ window.EB = window.EB || {};
         const st = S.step = sched[S.i];
         S.t = 0; S.running = true; S.lastSec = -1; S.cycle = st.cycle;
         applyCycle(st.cycle);
-        markActive(null);
+        markActive(st.kind);
         trail.setAttribute('width', 0);
         if (st.kind === 'in') {
           setPhase('شهيق ' + ar(st.secs));
