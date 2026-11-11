@@ -1975,11 +1975,11 @@ window.EB = window.EB || {};
     path('M-19,-8 q19,6 38,0', { stroke: '#e3b9bb', 'stroke-width': 1.8, fill: 'none', opacity: .85 }, cush);
     daisy(cush, 0, 4, 7, C.rose, C.gold);
     /* لحاف مرقّع بالزهور */
-    path('M846,350 q62,28 160,4 l0,44 q-92,18 -160,-6 z', { fill: 'url(#pQuilt)', stroke: C.roseDeep, 'stroke-width': 2.4 }, bed);
-    path('M846,350 q62,28 160,4', { stroke: '#fff', 'stroke-width': 3, opacity: .35, fill: 'none' }, bed);
-    path('M876,362 q4,18 1,34 M922,366 q4,16 1,30', { stroke: 'rgba(150,95,90,.32)', 'stroke-width': 2, fill: 'none' }, bed);
+    path('M842,332 Q910,326 988,332 Q1006,333 1006,348 L1006,392 Q1004,404 992,406 Q912,412 843,404 Q831,402 831,390 L831,349 Q832,336 842,332 Z', { fill: 'url(#pQuilt)', stroke: C.roseDeep, 'stroke-width': 2.4 }, bed);
+    path('M833,351 Q905,357 1003,351', { stroke: '#fff', 'stroke-width': 3, opacity: .35, fill: 'none' }, bed);
+    path('M858,357 Q850,378 857,400 M908,358 Q901,379 909,405 M962,356 Q954,379 961,402', { stroke: 'rgba(150,95,90,.32)', 'stroke-width': 2, fill: 'none' }, bed);
     /* دبدوب على السرير */
-    const teddy = svg('g', { transform: 'translate(938,318) scale(.86)' }, bed);
+    const teddy = svg('g', { transform: 'translate(938,328) scale(.86)' }, bed);
     svg('circle', { cx: -13, cy: -13, r: 7, fill: '#c99a6c', stroke: '#9a6f45', 'stroke-width': 1.8 }, teddy);
     svg('circle', { cx: 13, cy: -13, r: 7, fill: '#c99a6c', stroke: '#9a6f45', 'stroke-width': 1.8 }, teddy);
     svg('ellipse', { cx: 0, cy: 8, rx: 16, ry: 14, fill: '#d9ad7d', stroke: '#9a6f45', 'stroke-width': 1.8 }, teddy);
@@ -2030,8 +2030,8 @@ window.EB = window.EB || {};
     svg('path', { d: 'M462,346 l22,0 l-3,22 l-16,0 z', fill: C.cream, stroke: '#c9a06a', 'stroke-width': 2 }, desk);
     svg('path', { d: 'M484,350 q10,3 0,12', stroke: '#c9a06a', 'stroke-width': 2, fill: 'none' }, desk);
     svg('path', { d: 'M464,346 l18,0', stroke: C.sage, 'stroke-width': 3 }, desk);
-    svg('path', { d: 'M548,368 l-4,-16 l20,0 l-4,16 z', fill: C.terra, stroke: C.terraDeep, 'stroke-width': 2 }, desk);
-    daisy(desk, 554, 346, 5);
+    svg('path', { d: 'M590,368 l-4,-16 l20,0 l-4,16 z', fill: C.terra, stroke: C.terraDeep, 'stroke-width': 2 }, desk);
+    daisy(desk, 596, 346, 5);
     R.desk = desk; R.deskTopY = 368; R.deskCx = 452;
 
     const chair = svg('g', {}, side);
@@ -2055,13 +2055,14 @@ window.EB = window.EB || {};
     R.phone = phone; R.phoneScreen = phoneScreen; R.phoneWaves = waves;
 
     /* ---- تلفاز خشبي قديم ---- */
-    const tv = svg('g', {}, side);
+    const tv = svg('g', { class: 'desk-tv', transform: 'translate(488,368) scale(.63) translate(-856,-231)' }, desk);
     svg('rect', { x: 856, y: 118, width: 158, height: 104, rx: 12, fill: 'url(#gWood)', stroke: C.woodDeep, 'stroke-width': 2.6 }, tv);
     const tvScreen = svg('rect', { x: 865, y: 127, width: 122, height: 86, rx: 7, fill: '#b9d4c0', opacity: .8 }, tv);
     svg('rect', { x: 865, y: 127, width: 122, height: 26, rx: 7, fill: '#fff', opacity: .25 }, tv);
     svg('rect', { x: 992, y: 132, width: 14, height: 76, rx: 6, fill: '#8a5a37' }, tv);
     for (let i = 0; i < 3; i++) svg('circle', { cx: 999, cy: 146 + i * 22, r: 4, fill: C.gold }, tv);
-    svg('rect', { x: 904, y: 222, width: 62, height: 9, rx: 4, fill: C.woodDeep }, tv);
+    svg('rect', { x: 926, y: 218, width: 18, height: 11, rx: 3, fill: C.woodDeep }, tv);
+    svg('rect', { x: 899, y: 226, width: 72, height: 5, rx: 2.5, fill: C.woodDeep }, tv);
     R.tv = tv; R.tvScreen = tvScreen;
 
     /* ---- رفّ خشبي بمزهريات ونبات متدلّي ---- */
@@ -2269,13 +2270,13 @@ window.EB = window.EB || {};
       svg('rect', { x: 900, y: 92, width: 44, height: 66, rx: 14, fill: C.cream, stroke: '#dcc3a0', 'stroke-width': 2.4 }, bedT);
       svg('rect', { x: 900, y: 168, width: 44, height: 66, rx: 14, fill: C.roseLite, stroke: C.roseDeep, 'stroke-width': 2.4 }, bedT);
       daisy(bedT, 922, 125, 11, C.rose, C.gold);
-      T.duvet = svg('path', { d: 'M700,82 h178 q10,87 0,174 h-178 z', fill: 'var(--room-mid)', stroke: C.roseDeep, 'stroke-width': 2.6, 'stroke-linejoin': 'round' }, bedT);
+      T.duvet = svg('path', { d: 'M718,91 H871 Q889,91 889,108 V232 Q889,247 875,247 H719 Q709,247 709,236 V102 Q709,91 718,91 Z', fill: 'var(--room-mid)', stroke: C.roseDeep, 'stroke-width': 2.6, 'stroke-linejoin': 'round' }, bedT);
       for (let x = 722; x <= 852; x += 32) {
         for (let y = 106; y <= 230; y += 30) {
           svg('path', { d: 'M-7,0 Q0,-2 0,-9 Q2,-2 7,0 Q2,2 0,9 Q-2,2 -7,0 Z', fill: '#fff7ff', transform: `translate(${x},${y})` }, bedT);
         }
       }
-      path('M878,90 q6,76 0,158', { stroke: 'rgba(150,95,90,.5)', 'stroke-width': 3, fill: 'none' }, bedT);
+      path('M866,94 Q873,168 866,243', { stroke: 'rgba(150,95,90,.5)', 'stroke-width': 3, fill: 'none' }, bedT);
       path('M730,100 q40,66 0,140 M790,96 q26,74 0,148', { stroke: 'rgba(150,95,90,.28)', 'stroke-width': 2.4, fill: 'none' }, bedT);
       /* أعمدة الكانوبي + قماش */
       [[694, 76], [694, 258], [972, 76], [972, 258]].forEach(p => svg('circle', { cx: p[0] + 8, cy: p[1] + 4, r: 9, fill: C.woodLite, stroke: 'var(--accent-deep)', 'stroke-width': 2.4 }, bedT));
@@ -2696,7 +2697,7 @@ window.EB = window.EB || {};
       h('div', { class: 'progress-dots' }, D.LEVELS.map((l, i) =>
         h('span', { class: 'dot' + (i < li ? ' done' : i === li ? ' now' : '') }))),
       h('p', { class: 'sub', text: lvl.hint }),
-      h('p', { class: 'sub', text: 'المؤقت يستمر بين الأدوار. ابدئي حين تكونين جاهزة.' }),
+      h('p', { class: 'sub', text: 'المؤقت متوقف. اضغطي «ابدئي» عند الاستعداد.' }),
       h('div', { class: 'row' }, [start])
     ]);
   }
@@ -2933,7 +2934,7 @@ window.EB = window.EB || {};
 
       const S = {
         i: 0, cycle: 1, hits: 0, totalPoints: 0, t: 0, cueT: 0, pressed: false, running: false,
-        done: false, lastSec: -1, breath: 0, lastGrade: null, combo: 0
+        done: false, roundBreak: 0, lastSec: -1, breath: 0, lastGrade: null, combo: 0
       };
       L.state = S;
 
@@ -3028,6 +3029,7 @@ window.EB = window.EB || {};
         if (S.i >= sched.length) return succeed();
         const next = sched[S.i];
         cycleTxt.textContent = `الدورة ${ar(next.cycle)} من ${ar(cfg.cycles)}`;
+        if (prepareRound(next)) return;
         cue(next.kind);
         ctx.ui.banner(msg + (next.kind === 'in' ? ' · التالي شهيق' : ' · التالي زفير'), 'no', 650);
       }
@@ -3061,18 +3063,30 @@ window.EB = window.EB || {};
         if (st.need && !S.ok) ctx.ui.banner('راقبي المؤشر واضغطي داخل المنطقة البيضاء', '', 900);
       }
 
+      function prepareRound(next) {
+        if (next.cycle === S.cycle) return false;
+        S.cycle = next.cycle;
+        S.roundBreak = 2.2;
+        ctx.pauseClock();
+        applyCycle(next.cycle);
+        markActive('hold');
+        setPhase('استراحة بين الجولات');
+        ctx.ui.banner('استعدّي للجولة التالية', '', 2100);
+        return true;
+      }
+
       function advance() {
         S.running = false; S.i++;
         if (S.i >= sched.length) return succeed();
         const nx = sched[S.i];
-        S.cycle = nx.cycle;
+        if (prepareRound(nx)) return;
         cycleTxt.textContent = `الدورة ${ar(nx.cycle)} من ${ar(cfg.cycles)}`;
         if (nx.need) cue(nx.kind); else runStep();
       }
 
       function press(kind) {
         if (ctx.isPaused()) return;
-        if (S.done || S.running) return;
+        if (S.done || S.running || S.roundBreak > 0) return;
         if (EB.timer.remaining() <= 0) return;
         const st = sched[S.i];
         if (!st || !st.need) return;
@@ -3091,6 +3105,15 @@ window.EB = window.EB || {};
         if (ctx.isPaused()) return;
         if (S.done) return;
         const st = sched[S.i]; if (!st) return;
+        if (S.roundBreak > 0) {
+          S.roundBreak = Math.max(0, S.roundBreak - dt);
+          if (S.roundBreak === 0) {
+            ctx.resumeClock();
+            cycleTxt.textContent = `الدورة ${ar(st.cycle)} من ${ar(cfg.cycles)}`;
+            cue(st.kind);
+          }
+          return;
+        }
         if (!S.running) {
           S.cueT += dt * 1000;
           const p = S.cueT / travelTime(st.cycle);
@@ -3120,6 +3143,7 @@ window.EB = window.EB || {};
       function succeed() {
         if (S.done) return;
         S.done = true;
+        ctx.pauseClock();
         markActive(null);
         setPhase('هدوء ✓');
         ctx.girl.expression('happy', 500);
@@ -3459,6 +3483,7 @@ window.EB = window.EB || {};
       }
 
       function beginRound() {
+        ctx.resumeClock();
         S.roundMs = 0; S.phase = 'round'; S.needAdvance = false;
         const cfg = rounds[S.round];
         wave = 0;
@@ -3471,7 +3496,8 @@ window.EB = window.EB || {};
         for (const key of ORDER) if (MAP[key].noisy) MAP[key].calm();
         nextWaveAt = null;
         room.curtainWind = 0;
-        S.phase = 'gap'; S.gap = 1300; S.needAdvance = true;
+        ctx.pauseClock();
+        S.phase = 'gap'; S.gap = S.round < rounds.length - 1 ? 2200 : 1300; S.needAdvance = true;
         if (all) {
           burst(fx, geo.girl.x, geo.girl.y, { count: 12, color: accent, spread: 150, dur: 800 });
           EB.audio.great();
@@ -3802,6 +3828,7 @@ window.EB = window.EB || {};
       function finish() {
         if (S.done) return;
         S.done = true;
+        ctx.pauseClock();
         ctx.ui.clearControls();
         vText.textContent = 'أحسنتِ! تذكرتِ الترتيب كاملًا';
         let i = 0;
@@ -4106,7 +4133,8 @@ window.EB = window.EB || {};
           slot.r.setAttribute('fill', 'rgba(255,255,255,.86)');
           slot.r.setAttribute('stroke', '#c3b4d4');
         });
-        S.intermission = false;
+        S.intermission = 0;
+        ctx.resumeClock();
         ctx.ui.meter(`الجولة ${S.round + 1} من ${speeds.length}`, S.points);
         ctx.ui.banner(`الجولة ${S.round + 1} — سقوط أسرع`, '', 1000);
       }
@@ -4123,13 +4151,14 @@ window.EB = window.EB || {};
       function win() {
         if (S.done || S.intermission) return;
         if (S.round < speeds.length - 1) {
-          S.intermission = true;
-          ctx.ui.banner(`اكتمل الطبق ${S.round + 1} من ${speeds.length} ✓`, 'ok', 800);
+          S.intermission = 2.2;
+          ctx.pauseClock();
+          ctx.ui.banner(`اكتمل الطبق ${S.round + 1} من ${speeds.length} ✓`, 'ok', 2100);
           EB.audio.great();
-          later(800, nextRound);
           return;
         }
         S.done = true;
+        ctx.pauseClock();
         S.dir = 0;
         ctx.ui.clearControls();
         girl.expression('happy', 300);
@@ -4173,7 +4202,12 @@ window.EB = window.EB || {};
       S.plateKick = 0;
       const f = U.onFrame(dt => {
         if (ctx.isPaused()) return;
-        if (S.done || S.intermission) return;
+        if (S.done) return;
+        if (S.intermission > 0) {
+          S.intermission -= dt;
+          if (S.intermission <= 0) nextRound();
+          return;
+        }
         S.t += dt;
         /* ظهور العناصر حسب الجدول */
         while (S.queue.length && S.queue[0].t <= S.t) spawn(S.queue.shift());
@@ -4524,7 +4558,7 @@ window.EB = window.EB || {};
         hidePin();
         ctx.ui.clearControls();
         EB.keys.clear();
-        ctx.lockFinalTime();
+        ctx.pauseClock();
         const ev = evaluate(S.blocks);
         ctx.live(ev.score);
         const schedule = tasks.filter(task => S.blocks[task.id])
@@ -4837,7 +4871,7 @@ window.EB = window.EB || {};
 
     gotoIntro() {
       game.stopLevel();
-      game.finalTimeLocked = false;
+      game.clockHeld = false;
       delete document.body.dataset.team;
       EB.timer.pause(); EB.state.phase = 'intro'; EB.state.started = false;
       resetScene(); ui.hud(false); ui.controls(false); ui.clearControls();
@@ -4852,7 +4886,7 @@ window.EB = window.EB || {};
         st.resetAll();
         st.setOrder(teamId);
       }
-      game.finalTimeLocked = false;
+      game.clockHeld = false;
       st.started = false;
       st.teamIndex = Math.max(0, st.order.indexOf(teamId));
       st.levelIndex = 0;
@@ -4880,8 +4914,8 @@ window.EB = window.EB || {};
       st.levelIndex = index; st.phase = 'level';
       document.body.dataset.team = st.team;
       game.live = 0;
-      if (game.finalTimeLocked && !game.paused) EB.timer.resume();
-      game.finalTimeLocked = false;
+      game.clockHeld = false;
+      if (st.started && !game.paused) EB.timer.resume();
       ui.overlay(null);
       ui.hud(true); ui.controls(true);
       game.stopLevel();
@@ -4906,11 +4940,16 @@ window.EB = window.EB || {};
           notice.classList.add('penalty-flash');
           U.show(notice);
         },
-        lockFinalTime() {
-          if (game._ctx === ctx && index === D.LEVELS.length - 1 && EB.timer.remaining() > 0) {
-            game.finalTimeLocked = true;
-            EB.timer.pause();
-          }
+        pauseClock() {
+          if (game._ctx !== ctx) return;
+          game.clockHeld = true;
+          EB.timer.pause();
+          ui.timer();
+        },
+        resumeClock() {
+          if (game._ctx !== ctx) return;
+          game.clockHeld = false;
+          if (!game.paused) EB.timer.resume();
         },
         done(points, opts) {
           if (game._ctx === ctx) game.levelFinished(points, opts);
@@ -4945,7 +4984,8 @@ window.EB = window.EB || {};
       ui.score(p);
       game.stopLevel();
       const last = st.levelIndex === D.LEVELS.length - 1;
-      if (last) EB.timer.pause();
+      EB.timer.pause();
+      ui.timer();
       if (opts.skipped) ui.banner('تم تخطي المرحلة — بدون نقاط', 'no', 1000);
       setTimeout(() => {
         if (st.phase !== 'handoff') return;
@@ -5058,7 +5098,7 @@ window.EB = window.EB || {};
     switch (act) {
       case 'close': EB.teacher.close(); break;
       case 'pause-timer': EB.timer.pause(); EB.game.paused = true; ui.toast('تم إيقاف المؤقت'); break;
-      case 'resume-timer': EB.game.paused = false; if (!EB.game.finalTimeLocked && EB.state.started && !EB.state.teamData.finished && !(EB.state.phase === 'handoff' && EB.state.levelIndex === D.LEVELS.length - 1)) EB.timer.resume(); break;
+      case 'resume-timer': EB.game.paused = false; if (!EB.game.clockHeld && EB.state.started && !EB.state.teamData.finished && EB.state.phase === 'level') EB.timer.resume(); break;
       case 'mute': {
         const m = EB.audio.toggle();
         b.textContent = m ? 'إلغاء الكتم' : 'كتم الأصوات';
